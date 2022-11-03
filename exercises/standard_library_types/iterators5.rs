@@ -10,7 +10,7 @@
 //
 // Make the code compile and the tests pass.
 
-// I AM NOT DONE
+//
 
 use std::collections::HashMap;
 
@@ -34,7 +34,16 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    // 很诡异，为了让迭代器运行，强制生成了一个没有的数组
+    // map.values()
+    //     .map(|v| {
+    //         if v == &value {
+    //             count += 1
+    //         }
+    //         0
+    //     })
+    //     .collect::<Vec<i32>>();
+    map.values().map(|v| if v == &value { 1 } else { 0 }).sum()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -53,7 +62,15 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    // 外层拿到每一个map，内侧对每个map计数
+    collection
+        .iter()
+        .map(|m| {
+            m.values()
+                .map(|v| if v == &value { 1 } else { 0 })
+                .sum::<usize>()
+        })
+        .sum()
 }
 
 #[cfg(test)]
